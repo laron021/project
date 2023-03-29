@@ -4,17 +4,17 @@ import sys
 import subprocess
 
 PURPLE = '\033[1;95m'
-RED1 = '\033[1;31m'
-RED2 = '\033[0m'
-BLUE1 = '\033[1;90m'
-BLUE2 = '\033[0m'
+RED = '\033[1;31m'
+BLUE = '\033[1;90m'
+CYAN = '\033[1;92m'
+ENDCOLOR = '\033[0m'
 
 #Check if the current user is root
 if os.geteuid() == 0:
-    print(RED1 + 'You are running as root!' + RED2)
+    print(RED + 'You are running as root!' + ENDCOLOR)
 
 else:
-    print('\033[1;31m' + 'You need to be root to run this program. Exiting...' + '\033[0m')  # green text
+    print(RED + 'You need to be root to run this program. Exiting...' + ENDCOLOR)  #
     sys.exit(1)
 
 #CHECK IF THE NECCESARRY PROGRAMS ARE INSTLLED
@@ -26,13 +26,13 @@ result = subprocess.run(command33, shell=True, stdout=subprocess.PIPE, stderr=su
 if result.returncode == 0:
     print("nmap is installed!")
 else:
-    print("nmap is not installed. Install it with sudo apt install gobuster")
+    print("nmap is not installed. Install it with sudo apt install nmap")
 
 
 
 
 
-print(BLUE1 + ''' 
+print(BLUE + ''' 
 
 ██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗
 ██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝
@@ -45,26 +45,16 @@ print(BLUE1 + '''
         | | basic information gathering toool | |
         | |___________________________________| |
         |_______________________________________|
-''' + BLUE2)  # green text
+''' + ENDCOLOR)
 
-def menu():
-    #          bold, color
-    print('\033[1;90m' + '1: Scan with nmap' + '\033[0m')  # dark cyan text
-    print('\033[1;90m' + '2: DNSRecon' + '\033[0m')  # dark cyan text
-    print('\033[1;90m' + '3: IP a' + '\033[0m')  # dark cyan text
-    print('\033[1;90m' + '4: Option four' + '\033[0m')  # dark cyan text
-    print('\033[1;90m' + '5: Option five' + '\033[0m')  # dark cyan text
-    print('\033[1;90m' + '6: Option six' + '\033[0m')  # dark cyan text
-    print('\033[1;32m' + '7: Exit program' + '\033[0m')  # dark cyan text
-
-def save_command_output_to_file(command, output_file):
+def run_and_save(command, output_file):
     result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     # Check if the command was successful (exit code 0)
     if result.returncode == 0:
         # Display the output on the screen
         print(result.stdout.decode("utf-8"))
-        print('\033[1;92m' + 'SCAN PERFORMED SUCCESFULLY' + '\033[0m')  # green text
+        print(CYAN + 'SCAN PERFORMED SUCCESFULLY' + ENDCOLOR)  # green text
 
     else:
         print("Failed to run the command. Error message:")
@@ -75,18 +65,29 @@ def save_command_output_to_file(command, output_file):
         # Save the output to a file
         with open(output_file, "w") as file:
             file.write(result.stdout.decode("utf-8"))
-        print('\033[1;31m' + f'Command output has been saved to {output_file}.txt!' + '\033[0m')
+        print(RED + f'Command output has been saved to {output_file}.txt!' + ENDCOLOR)
 
     else:
-        print('\033[1;31m' + 'Result not saved!' + '\033[0m')
+        print(RED + 'Result not saved!' + ENDCOLOR)
+
+# Display the menu to the user
+def menu():
+    #          bold, color
+    print(BLUE + '1: Scan with nmap' + ENDCOLOR)  # dark cyan text
+    print(BLUE+ '2: DNSRecon' + ENDCOLOR)  # dark cyan text
+    print(BLUE + '3: IP a' + ENDCOLOR)  # dark cyan text
+    print(BLUE + '4: Option four' + ENDCOLOR)  # dark cyan text
+    print(BLUE + '5: Option five' + ENDCOLOR)  # dark cyan text
+    print(BLUE + '6: Option six' + ENDCOLOR)  # dark cyan text
+    print('\033[1;32m' + '7: Exit program' + ENDCOLOR)  # dark cyan text
+
 
 def option1():
     print("Option 1 selected")
     # Add code to execute option 1 here
-    #command = "nmap -p 80 192.168.0.109"
     IPadress = input("IP: ")
     command = 'nmap -p 80 -vv '+ IPadress
-    save_command_output_to_file(command, "output9.txt")
+    run_and_save(command, "output9.txt")
 
 
 def option2():
@@ -94,13 +95,13 @@ def option2():
     # Add code to execute option 2 here
     IPadress = input("site name: ")
     command = 'dnsrecon -d ' + IPadress +' -t axfr'
-    save_command_output_to_file(command,"output10.txt")
+    run_and_save(command,"output10.txt")
 
 
 def option3():
     print("Option 3 selected")
     command = "ip a"
-    save_command_output_to_file(command, "output11.txt")
+    run_and_save(command, "output11.txt")
 
 def option4():
     print("Option 4 selected")
@@ -117,11 +118,11 @@ def option6():
 
 
 
-# Display the menu to the user
+
 
 while True:
     menu()
-    choice = input(f"{PURPLE}Enter your choice: ")
+    choice = input(f"{PURPLE}Enter your choice: {ENDCOLOR}")
 
     # Execute the selected option
     if choice == "1":
@@ -137,7 +138,7 @@ while True:
     elif choice == "6":
         option6()
     elif choice == "7":
-        print('\033[1;31m' + 'Exiting...' + '\033[0m')
+        print(RED + 'Exiting...' + ENDCOLOR)
         break
     else:
         print("Invalid choice. Please try again.")
