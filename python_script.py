@@ -31,25 +31,25 @@ else:
 #OWASP NETTACKER
 def install_owasp_nettacker():
     git_clone_command = ["git", "clone", "https://github.com/OWASP/Nettacker.git"]
-    nettacker_directory = "Nettacker"
+    #nettacker_directory = "Nettacker"
 
     try:
-        print("Cloning OWASP Nettacker from GitHub...")
+        print(RED + "Cloning OWASP Nettacker from GitHub..." + ENDCOLOR)
         subprocess.check_output(git_clone_command)
-        print("Cloning completed.")
+        print(RED + "Cloning completed." + ENDCOLOR)
     except subprocess.CalledProcessError as e:
-        print(f"Error while cloning OWASP Nettacker: {e}")
+        print(RED + f"Error while cloning OWASP Nettacker: {e}" + ENDCOLOR)
         sys.exit(1)
 
     try:
-        print("Installing OWASP Nettacker dependencies...")
+        print(RED + "Installing OWASP Nettacker dependencies..." + ENDCOLOR)
         #os.chdir(nettacker_directory)
         #subprocess.check_output(["pip3", "install", "-r", "Nettacker/requirements.txt"])
         output = subprocess.run('pip3 install -r Nettacker/requirements.txt', shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         print(output.stdout.decode("utf-8"))
-        print("Installation completed.")
+        print(RED + "Installation completed." + ENDCOLOR)
     except subprocess.CalledProcessError as e:
-        print(f"Error while installing OWASP Nettacker dependencies: {e}")
+        print(RED + f"Error while installing OWASP Nettacker dependencies: {e}" + ENDCOLOR)
         sys.exit(1)
 
 
@@ -58,13 +58,13 @@ def run_owasp_nettacker(target_ip):
     command = f"python3 Nettacker/nettacker.py -i {target_ip} -m port_scan"
 
     try:
-        print(f"Starting OWASP Nettacker on target IP: {target_ip}")
+        print(BLUE + f"Starting OWASP Nettacker on target: {target_ip}" + ENDCOLOR)
         output = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         # output = subprocess.check_output(["python3 " nettacker_script + " -i " + target_ip + " -M" + " dir_scan"])
-        print("OWASP Nettacker scan completed.")
+        print(BLUE + "OWASP Nettacker scan completed." + ENDCOLOR)
         print(output.stdout.decode("utf-8"))
     except subprocess.CalledProcessError as e:
-        print(f"Error while running OWASP Nettacker: {e}")
+        print(RED + f"Error while running OWASP Nettacker: {e}" + ENDCOLOR)
         sys.exit(1)
 
 #---------------------------------------------------------------------------
@@ -148,7 +148,7 @@ def option4():
 
 def option5():
     print("Option 5 selected")
-    IPadress = input("site name: ")
+    IPadress = input(f"{PURPLE}IP Address: {ENDCOLOR}")
     # Add code to execute option 5 here
     isExist = os.path.exists("Nettacker")
 
@@ -157,7 +157,7 @@ def option5():
         run_owasp_nettacker(IPadress)
 
     else:
-        print("OWASP Nettacker installed")
+        print(RED + "OWASP Nettacker installed" + ENDCOLOR)
         run_owasp_nettacker(IPadress)
 
 
