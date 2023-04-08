@@ -44,7 +44,9 @@ def install_owasp_nettacker():
     try:
         print("Installing OWASP Nettacker dependencies...")
         #os.chdir(nettacker_directory)
-        subprocess.check_output(["pip3", "install", "-r", "Nettacker/requirements.txt"])
+        #subprocess.check_output(["pip3", "install", "-r", "Nettacker/requirements.txt"])
+        output = subprocess.run('pip3 install -r Nettacker/requirements.txt', shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        print(output.stdout.decode("utf-8"))
         print("Installation completed.")
     except subprocess.CalledProcessError as e:
         print(f"Error while installing OWASP Nettacker dependencies: {e}")
