@@ -2,12 +2,14 @@
 import os
 import sys
 import subprocess
+import shutil
 
 #DECLARE COLORS
 PURPLE = '\033[1;95m'
 RED = '\033[1;31m'
 BLUE = '\033[1;90m'
 CYAN = '\033[1;92m'
+LCYAN = '\033[1;32m'
 ENDCOLOR = '\033[0m'
 
 #Check if the current user is root
@@ -27,6 +29,30 @@ if result.returncode == 0:
     pass
 else:
     print("nmap is not installed. Install it with sudo apt install nmap")
+
+
+def run_and_save(command, output_file):
+    result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+    # Check if the command was successful (exit code 0)
+    if result.returncode == 0:
+        # Display the output on the screen
+        print(result.stdout.decode("utf-8"))
+        print(CYAN + 'SCAN PERFORMED SUCCESFULLY' + ENDCOLOR)  # green text
+
+    else:
+        print("Failed to run the command. Error message:")
+        print(result.stderr.decode("utf-8"))
+
+    saveit = input("save the result?(y/n): ")
+    if saveit == 'y':
+        # Save the output to a file
+        with open(output_file, "w") as file:
+            file.write(result.stdout.decode("utf-8"))
+        print(RED + f'Command output has been saved to {output_file}.txt!' + ENDCOLOR)
+
+    else:
+        print(RED + 'Result not saved!' + ENDCOLOR)
 
 #OWASP NETTACKER
 def install_owasp_nettacker():
@@ -70,53 +96,35 @@ def run_owasp_nettacker(target_ip):
 #---------------------------------------------------------------------------
 print(BLUE + ''' 
 
-██╗    ██╗███████╗██╗      ██████╗ ██████╗ ███╗   ███╗███████╗
-██║    ██║██╔════╝██║     ██╔════╝██╔═══██╗████╗ ████║██╔════╝
-██║ █╗ ██║█████╗  ██║     ██║     ██║   ██║██╔████╔██║█████╗  
-██║███╗██║██╔══╝  ██║     ██║     ██║   ██║██║╚██╔╝██║██╔══╝  
-╚███╔███╔╝███████╗███████╗╚██████╗╚██████╔╝██║ ╚═╝ ██║███████╗
- ╚══╝╚══╝ ╚══════╝╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝ 
-         _______________________________________ 
-        |  ___________________________________  |
-        | | basic information gathering tool | |
-        | |___________________________________| |
-        |_______________________________________|
+██╗███╗   ██╗███████╗ ██████╗ ██╗  ██╗██╗   ██╗███╗   ██╗████████╗███████╗██████╗ 
+██║████╗  ██║██╔════╝██╔═══██╗██║  ██║██║   ██║████╗  ██║╚══██╔══╝██╔════╝██╔══██╗
+██║██╔██╗ ██║█████╗  ██║   ██║███████║██║   ██║██╔██╗ ██║   ██║   █████╗  ██████╔╝
+██║██║╚██╗██║██╔══╝  ██║   ██║██╔══██║██║   ██║██║╚██╗██║   ██║   ██╔══╝  ██╔══██╗
+██║██║ ╚████║██║     ╚██████╔╝██║  ██║╚██████╔╝██║ ╚████║   ██║   ███████╗██║  ██║
+╚═╝╚═╝  ╚═══╝╚═╝      ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
+                                                                                                                                          
+                 _______________________________________ 
+                |  ___________________________________  |
+                | |     Information gathering and     | |
+                | |    vulnerability scanning tool    | |
+                | |             by laron              | |
+                | |___________________________________| |
+                |_______________________________________|
+                
+
 ''' + ENDCOLOR)
-
-def run_and_save(command, output_file):
-    result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-    # Check if the command was successful (exit code 0)
-    if result.returncode == 0:
-        # Display the output on the screen
-        print(result.stdout.decode("utf-8"))
-        print(CYAN + 'SCAN PERFORMED SUCCESFULLY' + ENDCOLOR)  # green text
-
-    else:
-        print("Failed to run the command. Error message:")
-        print(result.stderr.decode("utf-8"))
-
-    saveit = input("save the result?(y/n): ")
-    if saveit == 'y':
-        # Save the output to a file
-        with open(output_file, "w") as file:
-            file.write(result.stdout.decode("utf-8"))
-        print(RED + f'Command output has been saved to {output_file}.txt!' + ENDCOLOR)
-
-    else:
-        print(RED + 'Result not saved!' + ENDCOLOR)
 
 # Display the menu to the user
 def menu():
-    #          bold, color
+    print(CYAN + '-------------------' + ENDCOLOR)
     print(BLUE + '1: Scan with nmap' + ENDCOLOR)
     print(BLUE+ '2: DNSRecon' + ENDCOLOR)
     print(BLUE + '3: IP a' + ENDCOLOR)
     print(BLUE + '4: install requirements' + ENDCOLOR)
     print(BLUE + '5: OWASP Nettacker' + ENDCOLOR)
-    print(BLUE + '6: Option six' + ENDCOLOR)
-    print('\033[1;32m' + '7: Exit program' + ENDCOLOR)
-
+    print(BLUE + '6: Remove program' + ENDCOLOR)
+    print(LCYAN+ '7: Exit program' + ENDCOLOR)
+    print(CYAN + '-------------------' + ENDCOLOR)
 
 def option1():
     print("Option 1 selected")
@@ -163,8 +171,28 @@ def option5():
 
 def option6():
     print("Option 6 selected")
-    # Add code to execute option 6 here
+    # get the directory where the script is located
+    delete = input(f"{RED}Do you want to delete the program?(y/n): {ENDCOLOR}")
+    if delete == 'y':
+        print(RED + f'Deleting files...' + ENDCOLOR)
+        dir_path = os.path.dirname(os.path.realpath(__file__))
 
+        # delete all files and subdirectories in the directory
+        for filename in os.listdir(dir_path):
+            file_path = os.path.join(dir_path, filename)
+            try:
+                if os.path.isfile(file_path):
+                    os.unlink(file_path)
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
+            except Exception as e:
+                print(f"Failed to delete {file_path} due to {e}")
+
+        # delete the script itself
+        os.unlink(os.path.realpath(__file__))
+
+    else:
+        pass
 
 
 
