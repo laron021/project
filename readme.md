@@ -6,11 +6,11 @@ file: python_script.py
 ---
 
 # Quick Setup & Run
-
+**Install**
 ```bash
 $> git clone https://github.com/laron021/project.git && cd project && sudo python3 python_script.py
 ```
-
+**Run**
 ```bash
 $> sudo python3 python_script.py
 ```
