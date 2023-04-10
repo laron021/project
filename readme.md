@@ -1,19 +1,19 @@
-# Basic vulnerability scanner and information gathering tool
+# Vulnerability scanner and information gathering tool
 
 
 ---
 file: python_script.py
 ---
 
-# DESCRIPTION
-Install&run 
+# Quick Setup & Run
 
-```terminal
-root> git clone https://github.com/laron021/project.git && cd project && sudo python3 python_script.py
+```bash
+$> git clone https://github.com/laron021/project.git && cd project && sudo python3 python_script.py
 ```
-```terminal
-root> sudo python3 python_script.py
 
+```bash
+$> sudo python3 python_script.py
+```
 
 
 ## NOTES
