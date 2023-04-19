@@ -8,9 +8,10 @@ import shutil
 PURPLE = '\033[1;95m'
 RED = '\033[1;31m'
 BLUE = '\033[1;90m'
+DBLUE = '\033[96m'
 CYAN = '\033[1;92m'
-LCYAN = '\033[1;32m'
 ENDCOLOR = '\033[0m'
+
 
 #Check if the current user is root
 if os.geteuid() == 0:
@@ -21,15 +22,20 @@ else:
     sys.exit(1)
 
 #CHECK IF THE NECCESARRY PROGRAMS ARE INSTLLED
-command33 = "which nmap"
 # Run the command and capture the output
-result = subprocess.run(command33, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+result = subprocess.run("which nmap", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 # Check if the command was successful (exit code 0)
 if result.returncode == 0:
     pass
 else:
     print("nmap is not installed. Install it with sudo apt install nmap")
 
+#RUN AND SAVE
+#folder_name = "my_reports"
+#os.system(f"mkdir {folder_name}")
+
+if not os.path.exists('my_reports'):
+    os.makedirs('my_reports')
 
 def run_and_save(command, output_file):
     result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -37,22 +43,24 @@ def run_and_save(command, output_file):
     # Check if the command was successful (exit code 0)
     if result.returncode == 0:
         # Display the output on the screen
-        print(result.stdout.decode("utf-8"))
+        print(DBLUE + result.stdout.decode("utf-8") + ENDCOLOR)
         print(CYAN + 'SCAN PERFORMED SUCCESFULLY' + ENDCOLOR)  # green text
 
     else:
-        print("Failed to run the command. Error message:")
+        print(RED + "Failed to run the command. Error message:" + ENDCOLOR)
         print(result.stderr.decode("utf-8"))
 
     saveit = input("save the result?(y/n): ")
     if saveit == 'y':
-        # Save the output to a file
-        with open(output_file, "w") as file:
+        # Save the output to a file in the specified folder
+        output_path = os.path.join('my_reports', f"{output_file}.txt")
+        with open(output_path, "w") as file:
             file.write(result.stdout.decode("utf-8"))
-        print(RED + f'Command output has been saved to {output_file}.txt!' + ENDCOLOR)
+        print(RED + f'Command output has been saved to {output_path}!' + ENDCOLOR)
 
     else:
         print(RED + 'Result not saved!' + ENDCOLOR)
+
 
 #OWASP NETTACKER
 def install_owasp_nettacker():
@@ -93,69 +101,119 @@ def run_owasp_nettacker(target_ip):
         print(RED + f"Error while running OWASP Nettacker: {e}" + ENDCOLOR)
         sys.exit(1)
 
+
+def install_docker():
+    # Check if docker is installed
+    if subprocess.run(['which', 'docker'], stdout=subprocess.PIPE).returncode == 0:
+        print(RED+'Docker is already installed'+ENDCOLOR)
+        return
+
+    # Install docker
+    subprocess.run(['sudo', 'apt', 'install', '-y', 'docker.io'])
+
+    # Check if installation was successful
+    if subprocess.run(['which', 'docker'], stdout=subprocess.PIPE).returncode == 0:
+        print(RED+'Docker is installed!'+ENDCOLOR)
+    else:
+        print(RED+'Failed to install Docker'+ENDCOLOR)
+        return
+
+
+def download_zap_docker_image():
+    # Check if OWASP Zap is already downloaded
+    if subprocess.run(['docker', 'images', '-q', 'owasp/zap2docker-stable'], stdout=subprocess.PIPE).stdout.strip():
+        print(RED+'OWASP Zap is available'+ENDCOLOR)
+        return
+
+    # Download OWASP Zap
+    subprocess.run(['docker', 'pull', 'owasp/zap2docker-stable'])
+
+    # Check if download was successful
+    if subprocess.run(['docker', 'images', '-q', 'owasp/zap2docker-stable'], stdout=subprocess.PIPE).stdout.strip():
+        print(RED+'OWASP Zap downloaded'+ENDCOLOR)
+    else:
+        print(RED+'Failed to download OWASP Zap'+ENDCOLOR)
+
 #---------------------------------------------------------------------------
-print(BLUE + ''' 
+by = CYAN+'''          by laron'''+ENDCOLOR
+print(RED+'''
+     ____                                            
+    |  _ \  _   _  _ __ ___   _ __ ___   _   _       
+    | | | || | | || '_ ` _ \ | '_ ` _ \ | | | |      
+    | |_| || |_| || | | | | || | | | | || |_| |      
+    |____/  \__,_||_| |_| |_||_| |_| |_| \__, |      
+                              ____       |___/       
+                            / ___|   ___  __ _  _ __  ''' + ENDCOLOR)
+print(by+RED + '''          \___ \  / __|/ _` || '_ \ 
+                             ___) || (__| (_| || | | |
+                            |____/  \___|\__,_||_| |_|        ''' + ENDCOLOR)
 
-██╗███╗   ██╗███████╗ ██████╗ ██╗  ██╗██╗   ██╗███╗   ██╗████████╗███████╗██████╗ 
-██║████╗  ██║██╔════╝██╔═══██╗██║  ██║██║   ██║████╗  ██║╚══██╔══╝██╔════╝██╔══██╗
-██║██╔██╗ ██║█████╗  ██║   ██║███████║██║   ██║██╔██╗ ██║   ██║   █████╗  ██████╔╝
-██║██║╚██╗██║██╔══╝  ██║   ██║██╔══██║██║   ██║██║╚██╗██║   ██║   ██╔══╝  ██╔══██╗
-██║██║ ╚████║██║     ╚██████╔╝██║  ██║╚██████╔╝██║ ╚████║   ██║   ███████╗██║  ██║
-╚═╝╚═╝  ╚═══╝╚═╝      ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
-                                                                                                                                          
-                 _______________________________________ 
-                |  ___________________________________  |
-                | |     Information gathering and     | |
-                | |    vulnerability scanning tool    | |
-                | |             by laron              | |
-                | |___________________________________| |
-                |_______________________________________|
-                
-
-''' + ENDCOLOR)
-
+print(BLUE + '''
+     _______________________________________ 
+    |  ___________________________________  |
+    | |     Information gathering and     | |
+    | |    vulnerability scanning tool    | |
+    | |           for dummies             | |
+    | |___________________________________| |
+    |_______________________________________|  
+    ''' + ENDCOLOR)
 # Display the menu to the user
 def menu():
-    print(CYAN + '-------------------' + ENDCOLOR)
-    print(BLUE + '1: Scan with nmap' + ENDCOLOR)
-    print(BLUE+ '2: DNSRecon' + ENDCOLOR)
-    print(BLUE + '3: IP a' + ENDCOLOR)
-    print(BLUE + '4: install requirements' + ENDCOLOR)
+    #print(BLUE + '-------------------' + ENDCOLOR)
+    print(BLUE + '1: OS guessing' + ENDCOLOR)
+    print(BLUE+ '2: Check if host is up' + ENDCOLOR)
+    print(BLUE + '3: Service and version detection' + ENDCOLOR)
+    print(BLUE + '4: OWASP ZAP' + ENDCOLOR)
     print(BLUE + '5: OWASP Nettacker' + ENDCOLOR)
-    print(BLUE + '6: Remove program' + ENDCOLOR)
-    print(LCYAN+ '7: Exit program' + ENDCOLOR)
-    print(CYAN + '-------------------' + ENDCOLOR)
+    print(DBLUE + '6: Remove program' + ENDCOLOR)
+    print(BLUE + '7: DNS Enum' + ENDCOLOR)
+    print(BLUE+ '8: Exit program' + ENDCOLOR)
+    print(BLUE + '-------------------' + ENDCOLOR)
 
 def option1():
     print("Option 1 selected")
-    # Add code to execute option 1 here
-    IPadress = input("IP: ")
-    command = 'nmap -p 80 -vv '+ IPadress
-    run_and_save(command, "output9.txt")
+    IPadress = input(f"{PURPLE}IP Address: {ENDCOLOR}")
+    def nmap_os_scan(IPadress):
+        command = ["sudo", "nmap", "-O","--fuzzy", f"{IPadress}"]
+        result = subprocess.run(command, capture_output=True, text=True)
+        output_lines = result.stdout.split("\n")
+        os_detected = False
+        for line in output_lines:
+            if "Device type" in line:
+                os_detected = True
+            if os_detected:
+                print(DBLUE + line + ENDCOLOR)
 
+    nmap_os_scan(IPadress)
 
 def option2():
     print("Option 2 selected")
     # Add code to execute option 2 here
-    IPadress = input("site name: ")
-    command = 'dnsrecon -d ' + IPadress +' -t axfr'
-    run_and_save(command,"output10.txt")
+    IPadress = input(f"{PURPLE}IP Address: {ENDCOLOR}")
+    command = f"sudo hping3 -S -p 80,443,22,21,23 -c 1 {IPadress}"
+    run_and_save(command,"Host_up_check:"+IPadress)
 
 
 def option3():
     print("Option 3 selected")
-    command = "ip a"
+    IPadress = input(f"{PURPLE}IP Address: {ENDCOLOR}")
+    command = f"sudo nmap -sS -sV -T4 {IPadress}"
     run_and_save(command, "output11.txt")
 
 def option4():
     print("Option 4 selected")
     # Add code to execute option 4 here
-    command = "pip install -r requirements.txt"
-    run_and_save(command, "output11.txt")
-    run_and_save("import requests", "output11.txt")
+    def run_zap_scan(target_url):
+        command = f'docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap-full-scan.py -t {target_url} -g gen.conf -r REPORT_OWASP.html'
+        subprocess.run(command, shell=True)
+
+    install_docker()
+    download_zap_docker_image()
+    inp = input('URL: ')
+    run_zap_scan(inp)
 
 def option5():
-    print("Option 5 selected")
+    print("OWASP selected")
     IPadress = input(f"{PURPLE}IP Address: {ENDCOLOR}")
     # Add code to execute option 5 here
     isExist = os.path.exists("Nettacker")
@@ -170,7 +228,6 @@ def option5():
 
 
 def option6():
-    print("Option 6 selected")
     # get the directory where the script is located
     delete = input(f"{RED}Do you want to delete the program?(y/n): {ENDCOLOR}")
     if delete == 'y':
@@ -194,9 +251,11 @@ def option6():
     else:
         pass
 
-
-
-
+def option7():
+    print("Option 7 selected")
+    domain = input(f"{PURPLE} Domain/URL:{ENDCOLOR}")
+    command = f"dnsenum -r {domain}"
+    run_and_save(command, "output14.txt")
 
 while True:
     menu()
@@ -216,6 +275,8 @@ while True:
     elif choice == "6":
         option6()
     elif choice == "7":
+        option7()
+    elif choice == "8":
         print(RED + 'Exiting...' + ENDCOLOR)
         break
     else:
