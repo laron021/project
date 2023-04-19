@@ -89,7 +89,7 @@ def install_owasp_nettacker():
 
 def run_owasp_nettacker(target_ip):
     nettacker_script = "nettacker.py"
-    command = f"python3 Nettacker/nettacker.py -i {target_ip} -m port_scan"
+    command = f"python3 Nettacker/nettacker.py -i {target_ip} --profile vuln -o file7.html --graph d3_tree_v2_graph"
 
     try:
         print(BLUE + f"Starting OWASP Nettacker on target: {target_ip}" + ENDCOLOR)
@@ -204,7 +204,7 @@ def option4():
     print("Option 4 selected")
     # Add code to execute option 4 here
     def run_zap_scan(target_url):
-        command = f'docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap-full-scan.py -t {target_url} -g gen.conf -r REPORT_OWASP.html'
+        command = f'docker run -v $(pwd):/zap/wrk/:rw -t owasp/zap2docker-stable zap-baseline.py -t {target_url} -g gen.conf -r REPORT_OWASP.html'
         subprocess.run(command, shell=True)
 
     install_docker()
