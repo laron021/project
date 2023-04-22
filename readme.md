@@ -27,3 +27,6 @@ sudo python3 python_script.py
 ```
 # Guide
 ![](https://github.com/laron021/project/blob/main/menu.png)
+
+## License ![Feel free to use](https://img.shields.io/badge/Feel%20free%20to%20use-18A303?style=flat)
+This software is licensed under the [MIT](https://github.com/laron021/project/blob/main/LICENSE) License.
