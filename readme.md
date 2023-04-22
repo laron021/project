@@ -18,7 +18,7 @@ sudo python3 python_script.py
 
 ## NOTES
 ```diff
-- by laron
++ by laron
       _               ___                                   _ _             
  _   | |             / __)                                 | (_)            
 | |_ | | _  _   _   | |__ ___   ____     ____ ____ ____  _ | |_ ____   ____ 
