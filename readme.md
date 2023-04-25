@@ -30,6 +30,8 @@ sudo python3 dummy_scan.py
 ![](https://github.com/laron021/project/blob/main/sample/setup%26run.gif)
 
 # Menu
+Kali linux & Parrot Linux
+![](https://github.com/laron021/project/blob/main/sample/kali2.png)
 
 ## License ![Feel free to use](https://img.shields.io/badge/Feel%20free%20to%20use-18A303?style=flat)
 This software is licensed under the [MIT](https://github.com/laron021/project/blob/main/LICENSE) License.
