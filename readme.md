@@ -20,11 +20,11 @@ I've uploaded the project to GitHub, so be sure to check it out and let me know 
 # Quick Setup & Run
 **Download and Run**
 ```bash
-git clone https://github.com/laron021/project && cd project && sudo python3 python_script.py
+git clone https://github.com/laron021/project && cd project && sudo python3 dummy_scan.py
 ```
 **Run**
 ```bash
-sudo python3 python_script.py
+sudo python3 dummy_scan.py
 ```
 # Guide
 ![]()
