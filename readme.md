@@ -4,12 +4,12 @@
 ## Vulnerability scanner and information gathering tool
 ![Python 3.9+](https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=Python&logoColor=informational&color=blue)
 ![Kali Linux](https://img.shields.io/static/v1?style=for-the-badge&message=Kali+Linux&color=557C94&logo=Kali+Linux&logoColor=FFFFFF&label=)
-![Parrot Linux](https://img.shields.io/badge/Parrot%20Linux-brightgreen?style=for-the-badge&logo=Parrot&logoColor=white&color=44A833)
+![Parrot Linux](https://img.shields.io/badge/Parrot%20Linux-brightgreen?style=for-the-badge&logo=Parrot&logoColor=white#dc143c)
 ![Docker](https://img.shields.io/badge/-Docker-black?style=for-the-badge&logo=docker)
 ![GitHub](https://img.shields.io/badge/-GitHub-181717?style=for-the-badge&logo=github)
 
 
-## NOTES
+## NOTES ![Min 2,5 GB free space needed!](https://img.shields.io/badge/-Min%202%2C5%20GB%20free%20space%20needed!-darkred?style=flat-square)
 Introducing my project: a vulnerability scanner and information gathering tool designed for beginners! This tool is built to run on Kali,Parrot Linux and is perfect for those who are just starting out in the world of cybersecurity. With this tool, you can quickly and easily scan your system for vulnerabilities and gather information about potential targets.
 
 The tool is designed to be easy to use and requires no prior knowledge of cybersecurity or terminal usage. It features a user-friendly interface and provides step-by-step instructions to guide you through the scanning process. Whether you're looking to secure your own system or want to learn more about cybersecurity, this tool is a great place to start.
