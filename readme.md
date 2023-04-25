@@ -1,4 +1,4 @@
-![]( https://github.com/laron021/project/blob/main/logo.png)
+![](https://github.com/laron021/project/blob/main/sample/dummy.png)
 
 
 ## Vulnerability scanner and information gathering tool
@@ -27,7 +27,7 @@ git clone https://github.com/laron021/project && cd project && sudo python3 dumm
 sudo python3 dummy_scan.py
 ```
 # Guide
-![]()
+![](https://github.com/laron021/project/blob/main/sample/setup%26run.gif)
 
 # Menu
 
