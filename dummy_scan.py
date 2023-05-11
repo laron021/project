@@ -336,7 +336,7 @@ def option2():
     run_and_save(command, f"DNSenum--{domain}--{stringtoday}.txt")
 
 def option8():
-    subprocess.run(['xdg-open', 'my_reports'])
+    subprocess.run('sudo -u $(logname) xdg-open my_reports', shell=True)
     print(RED + 'Your reports are opened!' + ENDCOLOR)
 
 def option5():
