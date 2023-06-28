@@ -1,15 +1,12 @@
-# import modules
 import os
 import sys
 import subprocess
 import shutil
 from datetime import date
 
-#timestamp
 today = date.today()
 stringtoday = today.strftime("%b-%d-%Y")
 
-#DECLARE COLORS
 PURPLE = '\033[1;35m'
 RED = '\033[1;31m'
 BLUE = '\033[1;38;5;37m'
@@ -22,36 +19,31 @@ GRAY = '\033[38;5;116m'
 ENDCOLOR = '\033[0m'
 
 
-#Check if the current user is root
 if os.geteuid() == 0:
     print(RED + 'You are running as root!' + ENDCOLOR)
 
 else:
-    print(RED + 'You need to be root to run this program. Exiting...' + ENDCOLOR)  #
+    print(RED + 'You need to be root to run this program. Exiting...' + ENDCOLOR)
     sys.exit(1)
 
-#CHECK IF THE NECCESARRY PROGRAMS ARE INSTLLED
-# Run the command and capture the output
+
 result = subprocess.run("which nmap", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-# Check if the command was successful (exit code 0)
 if result.returncode == 0:
     pass
 else:
     print("nmap is not installed. Install it with sudo apt install nmap")
 
-#REPORT
+
 if not os.path.exists('my_reports'):
     os.makedirs('my_reports')
 
 def move_reports(file_name):
-    # Move the file from the Nettacker folder to the my_reports folder
-    os.rename((file_name), os.path.join('my_reports', file_name))
+    os.rename(file_name, os.path.join('my_reports', file_name))
 
-#RUN AND SAVE
+
 def run_and_save(command, output_file):
     result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-    # Check if the command was successful (exit code 0)
     if result.returncode == 0:
         # Display the output on the screen
         print(DBLUE + result.stdout.decode("utf-8") + ENDCOLOR)
@@ -63,7 +55,6 @@ def run_and_save(command, output_file):
 
     saveit = input("save the result?(y/n): ")
     if saveit == 'y':
-        # Save the output to a file in the specified folder
         output_path = os.path.join('my_reports', f"{output_file}.txt")
         with open(output_path, "w") as file:
             file.write(result.stdout.decode("utf-8"))
@@ -73,10 +64,8 @@ def run_and_save(command, output_file):
         print(RED + 'Result not saved!' + ENDCOLOR)
 
 
-#OWASP NETTACKER
 def install_owasp_nettacker():
     git_clone_command = ["git", "clone", "https://github.com/OWASP/Nettacker.git"]
-    #nettacker_directory = "Nettacker"
 
     try:
         print(RED + "Cloning OWASP Nettacker from GitHub..." + ENDCOLOR)
@@ -88,8 +77,6 @@ def install_owasp_nettacker():
 
     try:
         print(RED + "Installing OWASP Nettacker dependencies..." + ENDCOLOR)
-        #os.chdir(nettacker_directory)
-        #subprocess.check_output(["pip3", "install", "-r", "Nettacker/requirements.txt"])
         output = subprocess.run('pip3 install -r Nettacker/requirements.txt', shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         print(output.stdout.decode("utf-8"))
         print(RED + "Installation completed." + ENDCOLOR)
@@ -100,12 +87,10 @@ def install_owasp_nettacker():
 
 def run_owasp_nettacker(target_ip):
     command = f"python3 Nettacker/nettacker.py -i {target_ip} --profile vuln,information_gathering -o Nettacker--{target_ip}--{stringtoday}.html --graph d3_tree_v2_graph"
-    #command = f"python3 Nettacker/nettacker.py -i {target_ip} -m port_scan -o Nettacker--{target_ip}--{stringtoday}.html --graph d3_tree_v2_graph"
 
     try:
         print(BLUE + f"Starting OWASP Nettacker on target: {target_ip}" + ENDCOLOR)
         output = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        # output = subprocess.check_output(["python3 " nettacker_script + " -i " + target_ip + " -M" + " dir_scan"])
         print(BLUE + "OWASP Nettacker scan completed." + ENDCOLOR)
         print(output.stdout.decode("utf-8"))
         print(YELLOW + 'Press 8 to view reports' + ENDCOLOR)
@@ -116,15 +101,12 @@ def run_owasp_nettacker(target_ip):
 
 
 def install_docker():
-    # Check if docker is installed
     if subprocess.run(['which', 'docker'], stdout=subprocess.PIPE).returncode == 0:
         print(RED+'Docker is already installed'+ENDCOLOR)
         return
 
-    # Install docker
     subprocess.run(['sudo', 'apt', 'install', '-y', 'docker.io'])
 
-    # Check if installation was successful
     if subprocess.run(['which', 'docker'], stdout=subprocess.PIPE).returncode == 0:
         print(RED+'Docker is installed!'+ENDCOLOR)
     else:
@@ -133,15 +115,12 @@ def install_docker():
 
 
 def download_zap_docker_image():
-    # Check if OWASP Zap is already downloaded
     if subprocess.run(['docker', 'images', '-q', 'owasp/zap2docker-stable'], stdout=subprocess.PIPE).stdout.strip():
         print(RED+'OWASP Zap is available'+ENDCOLOR)
         return
 
-    # Download OWASP Zap
     subprocess.run(['docker', 'pull', 'owasp/zap2docker-stable'])
 
-    # Check if download was successful
     if subprocess.run(['docker', 'images', '-q', 'owasp/zap2docker-stable'], stdout=subprocess.PIPE).stdout.strip():
         print(RED+'OWASP Zap downloaded'+ENDCOLOR)
     else:
@@ -167,24 +146,22 @@ def run_zap_scan(target_url,switch):
         print("Invalid choice, try again")
 
 def nmap_os_scan(IPadress):
-    command = ["sudo", "nmap", "-O","--fuzzy", f"{IPadress}"]
+    command = ["sudo", "nmap", "-O", "-Pn", "--fuzzy", f"{IPadress}"]
     result = subprocess.run(command, capture_output=True, text=True)
     output_lines = result.stdout.split("\n")
     os_detected = False
     for line in output_lines:
-        if "Device type" in line:
+        if "Aggressive" in line:
             os_detected = True
         if os_detected:
             print(DBLUE + line + ENDCOLOR)
 
-    # Ask the user if they want to save the output to a file
-    save_output = input("Do you want to save the output to a file? (y/n): ")
+    save_output = input(f"{CYAN}Do you want to save the output to a file? (y/n): {ENDCOLOR}")
 
     if save_output.lower() == "y":
 
         output_filename = "OS Guessing--" + IPadress +'--'+ stringtoday
 
-            # Save the output to the 'my_reports' folder
         output_path = os.path.join('my_reports', output_filename)
         with open(output_path, "w") as file:
             file.write(result.stdout)
@@ -214,7 +191,7 @@ print(YELLOW+ '''
   | vulnerability scanner and information gathering tool |
   --------------------------------------------------------
     ''' + ENDCOLOR)
-# Display the menu to the user
+
 def menu():
     print(BLUE + '0: Help' + ENDCOLOR)
     print(BLUE + '1: Check availability' + ENDCOLOR)
@@ -253,7 +230,6 @@ def option3():
 
 def option1():
     print("Check availability")
-    # Add code to execute option 2 here
     IPadress = input(f"{PURPLE}target: {ENDCOLOR}")
     command = f"sudo hping3 -S -p 80,443,22,21,23 -c 1 {IPadress}"
     run_and_save(command,"Ping target--" + IPadress +'--'+ stringtoday)
@@ -285,10 +261,9 @@ def option6():
 def option7():
     print("OWASP Nettacker")
     IPadress = input(f"{PURPLE}target: {ENDCOLOR}")
-    # Add code to execute option 5 here
     isExist = os.path.exists("Nettacker")
 
-    if isExist == False:
+    if not isExist:
         install_owasp_nettacker()
         run_owasp_nettacker(IPadress)
         move_reports(f'Nettacker--{IPadress}--{stringtoday}.html')
@@ -299,12 +274,10 @@ def option7():
         move_reports(f'Nettacker--{IPadress}--{stringtoday}.html')
 
 def option10():
-    # get the directory where the script is located
     delete = input(f"{RED}Do you want to delete the program?(y/n): {ENDCOLOR}")
     if delete == 'y':
         print(RED + f'Deleting files...' + ENDCOLOR)
 
-        #DELETING DOCKER IMAGE
         image = 'owasp/zap2docker-stable'
         if subprocess.run(['docker', 'images', '-q', image], stdout=subprocess.PIPE).stdout.strip():
             os.system(f"docker rmi -f {image}")
@@ -314,7 +287,6 @@ def option10():
 
         dir_path = os.path.dirname(os.path.realpath(__file__))
 
-        # delete all files and subdirectories in the directory
         for filename in os.listdir(dir_path):
             file_path = os.path.join(dir_path, filename)
             try:
@@ -325,7 +297,6 @@ def option10():
             except Exception as e:
                 print(f"Failed to delete {file_path} due to {e}")
 
-        # delete the script itself
         os.unlink(os.path.realpath(__file__))
 
 
@@ -348,7 +319,6 @@ while True:
     menu()
     choice = input(f"{YELLOW2}Enter your choice: {ENDCOLOR}")
 
-    # Execute the selected option
     if choice == "0":
         option0()
     elif choice == "1":
