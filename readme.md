@@ -14,8 +14,6 @@ Introducing my project: a vulnerability scanner and information gathering tool d
 
 The tool is designed to be easy to use and requires no prior knowledge of cybersecurity or terminal usage. It features a user-friendly interface and provides step-by-step instructions to guide you through the scanning process. Whether you're looking to secure your own system or want to learn more about cybersecurity, this tool is a great place to start.
 
-I've uploaded the project to GitHub, so be sure to check it out and let me know what you think!
-
 
 # Quick Setup & Run
 **Download and Run**
