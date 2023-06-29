@@ -45,7 +45,6 @@ def run_and_save(command, output_file):
     result = subprocess.run(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     if result.returncode == 0:
-        # Display the output on the screen
         print(DBLUE + result.stdout.decode("utf-8") + ENDCOLOR)
         print(CYAN + 'SCAN PERFORMED SUCCESFULLY' + ENDCOLOR)  # green text
 
