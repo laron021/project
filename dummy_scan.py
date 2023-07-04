@@ -11,11 +11,11 @@ PURPLE = '\033[1;35m'
 RED = '\033[1;31m'
 BLUE = '\033[1;38;5;37m'
 DBLUE = '\033[36m'
-CYAN = '\033[1;92m'
-YELLOW = '\033[38;5;172m'
 YELLOW2 = '\033[1;38;5;172m'
-RED2 = '\033[1;38;5;160m'
 GRAY = '\033[38;5;116m'
+YELLOW = '\033[38;5;172m'
+RED2 = '\033[1;38;5;160m'
+CYAN = '\033[1;92m'
 ENDCOLOR = '\033[0m'
 
 
@@ -46,7 +46,7 @@ def run_and_save(command, output_file):
 
     if result.returncode == 0:
         print(DBLUE + result.stdout.decode("utf-8") + ENDCOLOR)
-        print(CYAN + 'SCAN PERFORMED SUCCESFULLY' + ENDCOLOR)  # green text
+        print(CYAN + 'SCAN PERFORMED SUCCESFULLY' + ENDCOLOR)
 
     else:
         print(RED + "Failed to run the command. Error message:" + ENDCOLOR)
@@ -155,6 +155,7 @@ def nmap_os_scan(IPadress):
         if os_detected:
             print(DBLUE + line + ENDCOLOR)
 
+    print(CYAN + 'SCAN PERFORMED SUCCESFULLY' + ENDCOLOR)
     save_output = input(f"{CYAN}Do you want to save the output to a file? (y/n): {ENDCOLOR}")
 
     if save_output.lower() == "y":
@@ -216,7 +217,7 @@ def option0():
     print(YELLOW2 + '3: ' + ENDCOLOR + '-Nmap sends TCP and UDP packets to a particular port, and then analyze its response. It compares this response\n    to a database of 2600 operating systems, and return information on the OS (and version) of a host.')
     print(YELLOW2 + '4: ' + ENDCOLOR + GRAY+'-Starts Nmap scan on a given target and probe open ports to determine service/version info'+ENDCOLOR)
     print(YELLOW2 + '5: ' + ENDCOLOR + 'The vulners script sends CPE descriptions of discovered services by Nmap to the vulners.com vulnerability database API and reports known CVEs in those services.')
-    print(YELLOW2 + '6: ' + ENDCOLOR + GRAY+'-The OWASP Zed Attack Proxy (ZAP) is one of the world’s most popular free security tools and is actively maintained by a dedicated international team of volunteers.\n    It can help you automatically find security vulnerabilities in your web applications while you are developing and testing your applications.\n    It iss also a great tool for experienced pentesters to use for manual security testing.'+ENDCOLOR)
+    print(YELLOW2 + '6: ' + ENDCOLOR + GRAY+'-The OWASP Zed Attack Proxy (ZAP) is one of the world’s most popular free security tools and is actively maintained by a dedicated international team of volunteers.\n    It can help you automatically find security vulnerabilities in your web applications while you are developing and testing your applications.\n    It is also a great tool for experienced pentesters to use for manual security testing.'+ENDCOLOR)
     print(YELLOW2 + '7: ' + ENDCOLOR + '-OWASP Nettacker project is created to automate information gathering, vulnerability scanning and eventually generating a report for networks, including services,\n    bugs, vulnerabilities, misconfigurations, and other information.')
 
     print(YELLOW2 + '-------------------' + ENDCOLOR)
@@ -230,14 +231,14 @@ def option3():
 def option1():
     print("Check availability")
     IPadress = input(f"{PURPLE}target: {ENDCOLOR}")
-    command = f"sudo hping3 -S -p 80,443,22,21,23 -c 1 {IPadress}"
+    command = f"sudo nping --tcp -p 21,22,23,25,53,80,110,143,443,465,587,993,995,1433,1521,3306,3389,5432,5900,8080 --delay 1s -H --count 2 --flags syn {IPadress}"
     run_and_save(command,"Ping target--" + IPadress +'--'+ stringtoday)
 
 
 def option4():
     print("Service and version detection")
     IPadress = input(f"{PURPLE}target: {ENDCOLOR}")
-    command = f"sudo nmap -sS -sV -T4 {IPadress}"
+    command = f"sudo nmap -sS -sV -T2 {IPadress}"
     run_and_save(command, "Service and version detection--" + IPadress +'--'+ stringtoday)
 
 def option6():
@@ -281,6 +282,10 @@ def option10():
         if subprocess.run(['docker', 'images', '-q', image], stdout=subprocess.PIPE).stdout.strip():
             os.system(f"docker rmi -f {image}")
             print(f"{image} image has been removed!")
+            print(RED + f"Removing Docker..." + ENDCOLOR)
+            os.system("apt-get remove -y docker.io")
+            print(RED + f"Docker has been removed..." + ENDCOLOR)
+
         else:
             print(f"{image} image does not exist.")
 
@@ -302,7 +307,7 @@ def option10():
 def option2():
     print("DNS Enumeration selected")
     domain = input(f"{PURPLE} target domain:{ENDCOLOR}")
-    command = f"dnsenum -r {domain}"
+    command = f"dnsenum --noreverse {domain}"
     run_and_save(command, f"DNSenum--{domain}--{stringtoday}.txt")
 
 def option8():
