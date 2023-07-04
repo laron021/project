@@ -276,7 +276,7 @@ def option7():
 def option10():
     delete = input(f"{RED}Do you want to delete the program?(y/n): {ENDCOLOR}")
     if delete == 'y':
-        print(RED + f'Deleting files...' + ENDCOLOR)
+        print(RED + f'Deleting docker image...' + ENDCOLOR)
 
         image = 'owasp/zap2docker-stable'
         if subprocess.run(['docker', 'images', '-q', image], stdout=subprocess.PIPE).stdout.strip():
@@ -289,6 +289,7 @@ def option10():
         else:
             print(f"{image} image does not exist.")
 
+        print(RED + f'Deleting files...' + ENDCOLOR)
         dir_path = os.path.dirname(os.path.realpath(__file__))
 
         for filename in os.listdir(dir_path):
