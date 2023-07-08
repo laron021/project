@@ -208,9 +208,9 @@ def menu():
 
 def option0():
     print(RED+"Welcome to help menu"+ENDCOLOR)
-    print(YELLOW2 + 'target: ' + ENDCOLOR + '                     example.com / 192.168.1.100')
-    print(YELLOW2 + 'target domain:'+ENDCOLOR+'               example.com / trythis.org')
-    print(YELLOW2 + 'target domain with protocol:' + ENDCOLOR + ' https://example.com / http://trythis.org')
+    print(YELLOW2 + 'target: ' + ENDCOLOR + PURPLE+'                     example.com or 192.168.1.100'+ENDCOLOR)
+    print(YELLOW2 + 'target domain:'+ENDCOLOR + PURPLE+'               example.com or trythis.org'+ENDCOLOR)
+    print(YELLOW2 + 'target domain with protocol:' + ENDCOLOR + PURPLE+' https://example.com or http://trythis.org'+ENDCOLOR)
     print('')
     print(YELLOW2 + '1: ' + ENDCOLOR + '-TCP SYN ping is useful for discovering alive hosts protected by a stateful firewall')
     print(YELLOW2 + '2: ' + ENDCOLOR + GRAY+'-Uses a perl script to enumerate DNS information of a domain and to discover non-contiguous ip blocks. \n    The main purpose of Dnsenum is to gather as much information as possible about a domain.'+ENDCOLOR)
