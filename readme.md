@@ -3,11 +3,14 @@
 
 ## Vulnerability scanner and information gathering tool
 ![Python 3.9+](https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=Python&logoColor=informational&color=blue)
-![Kali Linux](https://img.shields.io/static/v1?style=for-the-badge&message=Kali+Linux&color=557C94&logo=Kali+Linux&logoColor=FFFFFF&label=)
+[![Kali Linux](https://img.shields.io/badge/Kali_Linux-100000?style=for-the-badge&logo=Kali+Linux&logoColor=FFFFFF&labelColor=00505A&color=00505A)](https://github.com/shivamkapasia0)
 ![Parrot Linux](https://img.shields.io/badge/Parrot%20Linux-brightgreen?style=for-the-badge&logo=Parrot&logoColor=white#dc143c)
 ![Docker Badge](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff&style=for-the-badge)
 ![OWASP Badge](https://img.shields.io/badge/OWASP-000?logo=owasp&logoColor=fff&style=for-the-badge)
 ![GitHub](https://img.shields.io/badge/-GitHub-181717?style=for-the-badge&logo=github)
+
+
+
 
 
 ## NOTES ![Min 3 GB free space needed!](https://img.shields.io/badge/-Min%203%20GB%20free%20space%20needed!-darkred?style=flat-square)
@@ -17,11 +20,11 @@ The tool is designed to be easy to use and requires no prior knowledge of cybers
 
 
 # Quick Setup & Run
-**Download and Run**
+**![Download and Run](https://img.shields.io/badge/Download%20and%20Run-18A303?style=flat)**
 ```bash
 git clone https://github.com/laron021/project && cd project && sudo python3 dummy_scan.py
 ```
-**Run**
+**![Run](https://img.shields.io/badge/Run-18A303?style=flat)**
 ```bash
 sudo python3 dummy_scan.py
 ```
