@@ -5,7 +5,8 @@
 ![Python 3.9+](https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=Python&logoColor=informational&color=blue)
 ![Kali Linux](https://img.shields.io/static/v1?style=for-the-badge&message=Kali+Linux&color=557C94&logo=Kali+Linux&logoColor=FFFFFF&label=)
 ![Parrot Linux](https://img.shields.io/badge/Parrot%20Linux-brightgreen?style=for-the-badge&logo=Parrot&logoColor=white#dc143c)
-![Docker](https://img.shields.io/badge/-Docker-black?style=for-the-badge&logo=docker)
+![Docker Badge](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff&style=for-the-badge)
+![OWASP Badge](https://img.shields.io/badge/OWASP-000?logo=owasp&logoColor=fff&style=for-the-badge)
 ![GitHub](https://img.shields.io/badge/-GitHub-181717?style=for-the-badge&logo=github)
 
 
